@@ -1,0 +1,28 @@
+Freescale i.MX233/i.MX28 USB loader
+===================================
+
+This tool allows user to load U-Boot via BootROM USB download.
+
+Usage:
+======
+1) Connect the MX233/MX28 device to USB via device cable
+
+2) Apply this change to u-boot source code (still being investigated):
+
+diff --git a/arch/arm/cpu/arm926ejs/mx28/start.S b/arch/arm/cpu/arm926ejs/mx28/start.S
+index e572b78..5b5db8e 100644
+--- a/arch/arm/cpu/arm926ejs/mx28/start.S
++++ b/arch/arm/cpu/arm926ejs/mx28/start.S
+@@ -185,7 +185,7 @@ _reset:
+         * not when booting from ram!
+         */
+ #ifndef CONFIG_SKIP_LOWLEVEL_INIT
+-       bl      cpu_init_crit
++/*     bl      cpu_init_crit*/
+ #endif
+ 
+        bl      board_init_ll
+
+3) Compile U-Boot, compile this tool
+
+4) sudo ./mxsldr <path to u-boot.sb>

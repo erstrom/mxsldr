@@ -5,6 +5,8 @@ This tool allows user to load U-Boot via BootROM USB download.
 
 Usage:
 ======
+0) Apply patches (*.diff) onto kernel on your host machine, rebuild
+
 1) Connect the MX233/MX28 device to USB via device cable
 
 2) Apply this change to u-boot source code (still being investigated):

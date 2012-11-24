@@ -24,7 +24,7 @@
 #define HID_REPORT_TYPE_OUTPUT		0x02
 
 #define MX23_VID			0x066f
-#define MX23_PID			0x3700
+#define MX23_PID			0x3780
 #define MX28_VID			0x15a2
 #define MX28_PID			0x004f
 

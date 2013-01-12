@@ -11,7 +11,7 @@ mxsldr: mxsldr.c
 
 install: mxsldr
 	mkdir -p $(DESTDIR)/$(prefix)/bin
-	install -m 644 $^ $(DESTDIR)/$(prefix)/bin
+	install -m 755 $^ $(DESTDIR)/$(prefix)/bin
 
 clean:
 	rm -f mxsldr

@@ -231,10 +231,23 @@ exit:
 	return ret;
 }
 
+void print_usage()
+{
+	printf(
+		"Usage: mxsldr <bootstream>\n"
+		"              (e.g: u-boot.sb)\n");
+}
+
 int main(int argc, char const *const argv[])
 {
 	int ret;
 	libusb_device_handle *h = NULL;
+
+	/* Detect and exit. */
+	if (argc != 2) {
+		print_usage();
+		return 1;
+	}
 
 	ret = libusb_init(NULL);
 	if (ret < 0)
@@ -260,13 +273,6 @@ int main(int argc, char const *const argv[])
 		fprintf(stderr, "Failed to detect CPU\n");
 		goto exit;
 	}
-
-	/* Detect and exit. */
-	if (argc < 2)
-		goto exit;
-
-	if (argc > 2)
-		goto exit;
 
 	ret = upload_firmware((char *)argv[1], h);
 	if (ret)

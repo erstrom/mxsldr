@@ -72,6 +72,7 @@ static int get_mxs_dev(libusb_device_handle **h)
 	}
 
 	if (!rdev) {
+		fprintf(stderr, "No compatible device found.\n");
 		ret = -ENODEV;
 		goto exit;
 	}

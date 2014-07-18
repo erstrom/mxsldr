@@ -20,6 +20,7 @@
 
 #include <libusb.h>
 
+#define TRANSFER_TIMEOUT_MS		60000
 #define HID_SET_REPORT			0x09
 #define HID_REPORT_TYPE_OUTPUT		0x02
 
@@ -100,7 +101,7 @@ static int transfer(struct libusb_device_handle *h, int report,
 		ret = libusb_control_transfer(h, control_transfer,
 				HID_SET_REPORT,
 				(HID_REPORT_TYPE_OUTPUT << 8) | report,
-				0, buf, cnt, 1000);
+				0, buf, cnt, TRANSFER_TIMEOUT_MS);
 		last_trans = (ret > 0) ? ret - 1 : 0;
 		if (ret > 0)
 			ret = 0;
@@ -108,7 +109,8 @@ static int transfer(struct libusb_device_handle *h, int report,
 		if (cnt > 64)
 			cnt = 64;
 		ret = libusb_interrupt_transfer(h, interrupt_transfer,
-				buf, cnt, &last_trans, 1000);
+				buf, cnt, &last_trans,
+				TRANSFER_TIMEOUT_MS);
 	}
 
 	*offset += last_trans;
@@ -216,8 +218,11 @@ static int upload_firmware(char *fn, libusb_device_handle *h)
 
 	ret = transfer(h, 1, (uint8_t *)inquiry_download_fw,
 			sizeof(inquiry_download_fw), &last_trans);
-	if (ret)
+	if (ret) {
+		fprintf(stderr,
+			"An Error occured while transfering the firmware through USB.\n");
 		goto exit;
+	}
 
 	while ((len = fread(buf + 1, 1, sizeof(buf) - 1, f))) {
 		buf[0] = BLTC_CMD_DOWNLOAD_FIRMWARE;
